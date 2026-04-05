@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from collections import defaultdict
 import re
+import random
+from dataclasses import asdict, dataclass, field
 from typing import Any, Mapping, Sequence
 
 from merl_env.core.sample import TaskSample
@@ -67,7 +69,9 @@ _KEEP_RE = {
     name: re.compile(pattern, re.IGNORECASE | re.MULTILINE)
     for name, pattern in DIAGNOSIS_SECTION_PATTERNS.items()
 }
-_BOUNDARY_RE = re.compile("|".join(DIAGNOSIS_BOUNDARY_HEADERS), re.IGNORECASE | re.MULTILINE)
+_BOUNDARY_RE = re.compile(
+    "|".join(DIAGNOSIS_BOUNDARY_HEADERS), re.IGNORECASE | re.MULTILINE
+)
 
 
 @dataclass(slots=True, kw_only=True)
@@ -76,13 +80,22 @@ class DiagnosisBuilderConfig:
 
     hospital_dataset: str = "physionet-data.mimiciv_3_1_hosp"
     note_table: str = "physionet-data.mimiciv_note.discharge"
-    min_note_length: int = 500
+    min_note_length: int = 1000
     min_required_sections: int = 2
     section_order: tuple[str, ...] = DIAGNOSIS_SECTION_ORDER
     allowed_tools: tuple[str, ...] = ()
+    max_samples_per_label: int | None = None
+    sampling_seed: int = 7
     disease_mapping: dict[str, tuple[str, ...]] = field(
         default_factory=lambda: dict(DEFAULT_DISEASE_MAPPING)
     )
+
+    def __post_init__(self) -> None:
+        if (
+            self.max_samples_per_label is not None
+            and self.max_samples_per_label <= 0
+        ):
+            raise ValueError("max_samples_per_label must be positive when provided")
 
 
 def extract_diagnosis_sections(note_text: str) -> dict[str, str | None]:
@@ -99,7 +112,9 @@ def extract_diagnosis_sections(note_text: str) -> dict[str, str | None]:
         markers.append((match.start(), match.end(), None, False))
     markers.sort(key=lambda item: item[0])
 
-    for current, following in zip(markers, markers[1:] + [(len(note), None, None, False)]):
+    for current, following in zip(
+        markers, markers[1:] + [(len(note), None, None, False)]
+    ):
         start, header_end, section_name, keep = current
         del start
         content_end = following[0]
@@ -249,13 +264,15 @@ def build_diagnosis_samples(
     if not prepared_rows:
         return empty_split_buckets()
 
+    sampled_rows = _sample_prepared_rows(prepared_rows, builder_config)
+
     assignments = assign_subject_splits(
-        [row["subject_id"] for row in prepared_rows],
+        [row["subject_id"] for row in sampled_rows],
         config=split_config,
     )
     samples_by_split = empty_split_buckets()
 
-    for row in prepared_rows:
+    for row in sampled_rows:
         split = assignments[row["subject_id"]]
         sample = TaskSample(
             sample_id=build_sample_id(
@@ -293,6 +310,47 @@ def build_diagnosis_samples(
         samples_by_split[split].append(sample)
 
     return sort_split_buckets(samples_by_split)
+
+
+def _sample_prepared_rows(
+    prepared_rows: Sequence[Mapping[str, Any]],
+    config: DiagnosisBuilderConfig,
+) -> list[dict[str, Any]]:
+    rows = [dict(row) for row in prepared_rows]
+    if config.max_samples_per_label is None:
+        return rows
+
+    rows_by_label: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for row in rows:
+        rows_by_label[_diagnosis_label(row)].append(row)
+
+    rng = random.Random(config.sampling_seed)
+    sampled_rows: list[dict[str, Any]] = []
+    for label in sorted(rows_by_label):
+        label_rows = sorted(rows_by_label[label], key=_prepared_row_sort_key)
+        if len(label_rows) > config.max_samples_per_label:
+            sampled_rows.extend(rng.sample(label_rows, config.max_samples_per_label))
+        else:
+            sampled_rows.extend(label_rows)
+    return sorted(sampled_rows, key=_prepared_row_sort_key)
+
+
+def _diagnosis_label(row: Mapping[str, Any]) -> str:
+    label = str(row.get("primary_label") or "").strip()
+    if label:
+        return label
+    diagnosis = str(row.get("primary_diagnosis") or "").strip()
+    return diagnosis or "unknown"
+
+
+def _prepared_row_sort_key(row: Mapping[str, Any]) -> tuple[int, int, str]:
+    subject_id = coerce_int(row.get("subject_id"))
+    hadm_id = coerce_int(row.get("hadm_id"))
+    return (
+        -1 if subject_id is None else subject_id,
+        -1 if hadm_id is None else hadm_id,
+        str(row.get("note_id") or ""),
+    )
 
 
 def build_diagnosis_artifacts(

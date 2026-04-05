@@ -11,6 +11,7 @@ from merl_env.data.artifacts import (
     load_task_split,
     write_task_artifacts,
 )
+from merl_env.data.bigquery_source import BigQueryMimicSource, BigQueryMimicSourceConfig
 from merl_env.data.diagnosis_builder import (
     DEFAULT_DISEASE_MAPPING,
     DIAGNOSIS_QUERY_NAME,
@@ -108,6 +109,8 @@ __all__ = [
     "build_icd_artifacts",
     "build_icd_query",
     "build_icd_samples",
+    "BigQueryMimicSource",
+    "BigQueryMimicSourceConfig",
     "build_task_artifact_paths",
     "collect_top_icd_codes",
     "compute_hard_barrier",

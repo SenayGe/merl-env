@@ -31,10 +31,7 @@ RowsFactory = Callable[[MimicQuery], Sequence[Mapping[str, Any]]]
 class InMemoryMimicSource(MimicSource):
     """Test-friendly source that returns pre-seeded rows by query name."""
 
-    def __init__(
-        self,
-        fixtures: Mapping[str, Sequence[Mapping[str, Any]] | RowsFactory] | None = None,
-    ) -> None:
+    def __init__(self, fixtures) -> None:
         self._fixtures = dict(fixtures or {})
 
     def fetch_rows(self, query: MimicQuery) -> list[dict[str, Any]]:
@@ -46,4 +43,3 @@ class InMemoryMimicSource(MimicSource):
         else:
             rows = fixture
         return [dict(row) for row in rows]
-
