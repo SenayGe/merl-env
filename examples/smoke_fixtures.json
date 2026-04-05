@@ -1,0 +1,163 @@
+{
+  "diagnosis_cases": [
+    {
+      "all_mapped_labels": [
+        "Sepsis / septic shock"
+      ],
+      "clinical_note": "History of Present Illness:\nFever and confusion.\nPast Medical History:\nDiabetes mellitus.\nDischarge Diagnoses:\nSepsis",
+      "hadm_id": 1001,
+      "note_id": "n-1",
+      "primary_icd": "A419",
+      "primary_icd_version": 10,
+      "primary_label": "Sepsis / septic shock",
+      "primary_long_title": "Sepsis, unspecified organism",
+      "subject_id": 11
+    }
+  ],
+  "discharge_charlson": [
+    {
+      "charlson_comorbidity_index": 4,
+      "hadm_id": 1001,
+      "renal_disease": 1
+    }
+  ],
+  "discharge_cohort": [
+    {
+      "admission_location": "EMERGENCY ROOM",
+      "admission_type": "EMERGENCY",
+      "admittime": "2024-01-01T08:00:00",
+      "age_at_admission": 66,
+      "deathtime": null,
+      "discharge_location": "HOME",
+      "dischtime": "2024-01-03T12:00:00",
+      "dod": null,
+      "gender": "M",
+      "hadm_id": 1001,
+      "subject_id": 10
+    }
+  ],
+  "discharge_diagnoses": [
+    {
+      "hadm_id": 1001,
+      "icd_code": "I509",
+      "icd_version": 10,
+      "long_title": "Heart failure, unspecified",
+      "seq_num": 1
+    },
+    {
+      "hadm_id": 1001,
+      "icd_code": "E119",
+      "icd_version": 10,
+      "long_title": "Type 2 diabetes mellitus without complications",
+      "seq_num": 2
+    }
+  ],
+  "discharge_icu_stays": [],
+  "discharge_labs": [
+    {
+      "charttime": "2024-01-02T06:00:00",
+      "hadm_id": 1001,
+      "lab_name": "Potassium",
+      "valuenum": 4.1
+    },
+    {
+      "charttime": "2024-01-02T06:15:00",
+      "hadm_id": 1001,
+      "lab_name": "Sodium",
+      "valuenum": 140
+    },
+    {
+      "charttime": "2024-01-02T06:30:00",
+      "hadm_id": 1001,
+      "lab_name": "Glucose",
+      "valuenum": 150
+    },
+    {
+      "charttime": "2024-01-02T06:45:00",
+      "hadm_id": 1001,
+      "lab_name": "Lactate",
+      "valuenum": 1.1
+    },
+    {
+      "charttime": "2024-01-02T07:00:00",
+      "hadm_id": 1001,
+      "lab_name": "Hemoglobin",
+      "valuenum": 10.2
+    }
+  ],
+  "discharge_readmissions": [
+    {
+      "hadm_id": 1001,
+      "readmit_30d": 1,
+      "readmit_72h": 0,
+      "readmit_7d": 1
+    }
+  ],
+  "discharge_sofa": [
+    {
+      "hadm_id": 1001,
+      "sofa_renal": 1,
+      "sofa_score": 3,
+      "starttime": "2024-01-02T00:00:00"
+    }
+  ],
+  "discharge_vitals": [
+    {
+      "charttime": "2024-01-02T09:30:00",
+      "hadm_id": 1001,
+      "source": "derived",
+      "valuenum": 108,
+      "vital_name": "heart_rate"
+    },
+    {
+      "charttime": "2024-01-02T10:00:00",
+      "hadm_id": 1001,
+      "source": "derived",
+      "valuenum": 22,
+      "vital_name": "respiratory_rate"
+    },
+    {
+      "charttime": "2024-01-02T10:30:00",
+      "hadm_id": 1001,
+      "source": "derived",
+      "valuenum": 96,
+      "vital_name": "spo2"
+    },
+    {
+      "charttime": "2024-01-02T11:00:00",
+      "hadm_id": 1001,
+      "source": "derived",
+      "valuenum": 37.1,
+      "vital_name": "temperature_c"
+    },
+    {
+      "charttime": "2024-01-02T11:30:00",
+      "hadm_id": 1001,
+      "source": "derived",
+      "valuenum": 118,
+      "vital_name": "sbp"
+    }
+  ],
+  "icd_cases": [
+    {
+      "clinical_note": "Discharge summary for heart failure and diabetes.",
+      "hadm_id": 3001,
+      "icd_code": "I5023",
+      "icd_version": 10,
+      "long_title": "Acute on chronic systolic heart failure",
+      "note_id": "icd-note-1",
+      "seq_num": 1,
+      "subject_id": 31
+    },
+    {
+      "clinical_note": "Discharge summary for heart failure and diabetes.",
+      "hadm_id": 3001,
+      "icd_code": "E119",
+      "icd_version": 10,
+      "long_title": "Type 2 diabetes mellitus without complications",
+      "note_id": "icd-note-1",
+      "seq_num": 2,
+      "subject_id": 31
+    }
+  ]
+}
