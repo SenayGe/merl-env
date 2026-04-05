@@ -1,6 +1,6 @@
 # MeRL (Medical RL) Environment
 
-`merl-env` is a small Python library for building RL evnironments for clinical tasks. You can tweak the evaluation tasks, add agent-tools, and run RL training on your version of clinical tasks.
+MeRL is a small Python library for building RL evnironments for clinical tasks. You can tweak the evaluation tasks, add agent-tools, and run RL training on your version of clinical tasks.
 
 Currently, evaluation scenarios are based on MIMIC-IV dataset only.
 
@@ -9,14 +9,14 @@ Currently, evaluation scenarios are based on MIMIC-IV dataset only.
 Use Python 3.10+.
 
 ```bash
-python3.10 -m pip install -e ".[dev]"
-python3.10 -m pytest
+python -m pip install -e ".[dev]"
+# python -m pytest
 ```
 
 To try the library end to end right now with the bundled example cases:
 
 ```bash
-python3.10 scripts/build_tasks.py \
+python scripts/build_tasks.py \
   --source-fixtures examples/smoke_fixtures.json \
   --out-dir ./artifacts \
   --task all \
