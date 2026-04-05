@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "merl-env"
+version = "0.1.0"
+description = "Trainer-agnostic clinical RL environment foundations for MIMIC-derived tasks."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+bigquery = ["google-cloud-bigquery>=3,<4"]
+data = ["pyarrow>=18"]
+dev = ["pytest>=8,<9", "pyarrow>=18"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/merl_env"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
