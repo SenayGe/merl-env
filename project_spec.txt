@@ -1,0 +1,192 @@
+
+The task is to build RL environment for clinical tasks that uses MIMIC-dataset. Build phase 1 in the following project spec.
+
+
+# MeRL-Env Project Spec
+
+
+Build a **trainer-agnostic clinical RL environment library** for open-source LLMs that:
+
+- uses **MIMIC-IV-derived task tables** built from BigQuery,
+- supports **single-turn clinical tasks**,
+- allows **tool use inside a single sample solve loop**,
+- exposes a clean interface for **GRPO training** and **offline evaluation**,
+- is **not tied to Prime Intellect**.
+
+The implementation should target a stack that can later plug into **TRL GRPO**, **Transformers chat templates/tool use**, and **Unsloth-based RL workflows**. TRL’s GRPO trainer exists as the RL target, Transformers provides the message/template and tool-use conventions, and Unsloth has current GRPO workflows you can build around.
+
+## Phase 1 — Core Runtime
+
+### Goal
+
+Build the reusable foundation:
+
+* environment runtime
+* task data pipeline
+* tools
+* parser
+* verifier
+
+At the end of Phase 1, I should be able to prepare and visualize the training or eval cases that will be used for RL training or agent eval.
+
+---
+
+## Phase 1 scope
+
+### In scope
+
+* task sample format
+* task spec format
+* BigQuery/private task-table data source
+* task builders
+* prompt templates
+* message-based runtime
+* single-turn environment
+* tool-enabled single-turn environment
+* tool registry + executor
+* final-output parser
+* tool-call parser
+* LLM judge verifiers
+* trace/result object
+* basic smoke-test script
+
+### Out of scope
+
+* GRPO training
+* Unsloth integration
+* TRL adapter
+* formal offline evaluation runner
+* metrics aggregation pipeline
+* experiment configs
+* checkpointing / logging for training runs
+
+---
+
+## Phase 1 repository structure
+
+```text
+clinical_rl/
+  pyproject.toml
+  README.md
+
+  src/clinical_rl/
+    core/
+      sample.py
+      task.py
+      result.py
+      message.py
+      tool_call.py
+      registry.py
+
+    data/
+      mimic_source.py
+      diagnosis_builder.py
+      discharge_builder.py
+      icd_builder.py
+
+    tasks/
+      diagnosis.py
+      discharge.py
+      icd.py
+
+    prompts/
+      diagnosis.txt
+      discharge.txt
+      icd.txt
+
+    parsers/
+ 
+
+    tools/
+      base.py
+      registry.py
+      executor.py
+      web_search.py
+      icd_lookup.py
+      lab_ranges.py
+
+    environments/
+      base.py
+      single_turn.py
+      tool_enabled.py
+
+    verifiers/
+      base.py
+      diagnosis.py (llm judge
+
+    utils/
+   
+
+  scripts/
+    build_tasks.py
+    smoke_test_env.py
+
+  tests/
+```
+
+
+## Phase 1 data layer
+
+### Goal
+
+Materialize clean task tables from BigQuery-derived MIMIC data.
+
+### Required components
+
+* `mimic_source.py`
+* `diagnosis_builder.py`
+* `discharge_builder.py`
+* `icd_builder.py`
+
+### Requirements
+
+* builders run offline
+* runtime reads prebuilt task tables
+* no raw MIMIC joins during training/runtime
+* support `train`, `val`, `test`
+
+
+## Phase 1 environment layer
+
+### Goal
+
+Provide the reusable runtime that takes a sample and returns an `EvalResult`.
+
+### Required files
+
+* `environments/base.py`
+* `environments/single_turn.py`
+* `environments/tool_enabled.py`
+
+### Runtime modes
+
+* Single turn
+* Tool enabled single turn(1 or more tool calls in the turn)
+
+### Single turn environment
+
+Flow:
+
+1. build messages
+2. call model
+3. parse final answer
+4. verify
+5. return `EvalResult`
+
+### Tool enabled single turn Environment
+
+This allows for one or more tool calls (with max tool calls set to avoid non-stop tool calls)`
+
+Flow:
+
+1. build messages
+2. call model
+3. if tool requested:
+
+   * validate tool call
+   * execute tool
+   * append tool result message
+   * continue
+4. else parse final answer
+5. verify
+6. return `EvalResult`

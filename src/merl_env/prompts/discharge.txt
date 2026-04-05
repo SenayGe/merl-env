@@ -1,0 +1,29 @@
+Assess whether this patient appears safe for hospital discharge within the next 24 hours.
+
+Snapshot time: {snapshot_time}
+Admission time: {admittime}
+Planned discharge time: {dischtime}
+Age: {age_at_admission}
+Gender: {gender}
+Admission type: {admission_type}
+Admission location: {admission_location}
+Planned discharge location: {discharge_location}
+In ICU at snapshot: {icu_t}
+
+Vitals:
+{vitals_block}
+
+Labs:
+{labs_block}
+
+Diagnoses:
+{diagnoses_block}
+
+Charlson:
+{charlson_block}
+
+SOFA:
+{sofa_block}
+
+Return exactly one tagged JSON object:
+<final_answer>{{"safe_for_discharge_24h": true, "has_hard_barrier": false, "rationale": "<brief rationale>"}}</final_answer>

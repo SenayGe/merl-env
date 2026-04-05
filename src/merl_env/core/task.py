@@ -18,6 +18,11 @@ class TaskSpec(ABC):
         """Unique task name."""
 
     @property
+    def prompt_template_path(self) -> str | None:
+        """Package-relative prompt template resource path."""
+        return None
+
+    @property
     @abstractmethod
     def answer_schema_name(self) -> str:
         """Name of the answer schema expected from this task."""
@@ -40,4 +45,3 @@ class TaskSpec(ABC):
     @abstractmethod
     def build_messages(self, sample: TaskSample) -> list[Message]:
         """Render a sample into model-ready messages."""
-

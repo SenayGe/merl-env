@@ -1,0 +1,7 @@
+Determine the most likely primary diagnosis from the discharge-note summary below.
+
+Clinical summary:
+{clinical_summary}
+
+Return exactly one tagged JSON object:
+<final_answer>{{"primary_diagnosis": "<primary diagnosis>"}}</final_answer>

@@ -1,0 +1,7 @@
+Assign up to 10 ICD diagnosis codes that best match this discharge note.
+
+Discharge note:
+{note_text}
+
+Return exactly one tagged JSON object:
+<final_answer>{{"icd_codes": ["<code1>", "<code2>"]}}</final_answer>

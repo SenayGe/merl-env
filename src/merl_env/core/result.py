@@ -28,8 +28,8 @@ class EvalResult:
     reward: float | None = None
     parsed_answer: dict[str, Any] | None = None
     raw_output: str | None = None
+    tool_events: tuple[dict[str, Any], ...] = field(default_factory=tuple)
     verification: dict[str, Any] | None = None
     trace: EvalTrace | None = None
     error: str | None = None
     stop_reason: str | None = None
-
