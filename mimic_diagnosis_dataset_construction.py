@@ -44,6 +44,7 @@ BOUNDARY_HEADERS = [
 KEEP_RE = {k: re.compile(v, re.I | re.M) for k, v in KEEP_HEADERS.items()}
 BOUNDARY_RE = re.compile("|".join(BOUNDARY_HEADERS), re.I | re.M)
 
+GCP_PROJECT = None
 
 def extract_sections(note):
     """Return only the allowed sections, drop anything past a boundary."""
@@ -191,7 +192,7 @@ assert N_DISEASE_SAMPLE == N_DISEASE_SFT + N_DISEASE_GRPO + N_DISEASE_EVAL
 
 # ── Main data-prep function ───────────────────────────────────────────
 def prepare_mimic_data(
-    GCP_PROJECT_ID="smartwatch-release",
+    GCP_PROJECT_ID= GCP_PROJECT,
     LOCATION="US",
     OUTPUT_DIR="/content/drive/MyDrive/mimic_diagnosis",
     RANDOM_SEED=42,

@@ -1499,7 +1499,7 @@ def parse_args() -> argparse.Namespace:
             "propagation for missing core fields."
         )
     )
-    p.add_argument("--project_id", default="smartwatch-release", help="GCP project id for BigQuery billing")
+    p.add_argument("--project_id", default=None, help="GCP project id for BigQuery billing")
     p.add_argument("--dataset", default="physionet-data.mimiciv_3_1", help="MIMIC-IV dataset prefix")
     p.add_argument("--derived_vitals_table", default="physionet-data.mimiciv_3_1_derived.vitalsign")
     p.add_argument("--derived_dataset", default="physionet-data.mimiciv_3_1_derived",
