@@ -16,13 +16,7 @@ python -m pip install -e ".[dev]"
 To try the library end to end right now with the bundled example cases:
 
 ```bash
-python scripts/build_tasks.py \
-  --source-fixtures examples/smoke_fixtures.json \
-  --out-dir ./artifacts \
-  --task all \
-  --diagnosis-max-samples-per-label 100 \
-  --diagnosis-sampling-seed 7 \
-  --preview-limit 1
+python scripts/build_tasks.py --source-fixtures examples/smoke_fixtures.json --out-dir ./artifacts --task all --diagnosis-max-samples-per-label 100 --diagnosis-sampling-seed 7 --preview-limit 1
 ```
 
 <!-- `--diagnosis-max-samples-per-label` is a per-label cap for the `diagnosis` task, and it is applied before train/val/test split assignment. Sampling is deterministic for a given `--diagnosis-sampling-seed`. -->
@@ -40,25 +34,13 @@ Authenticate with ADC, for example by setting `GOOGLE_APPLICATION_CREDENTIALS` o
 You can build a diagnosis dataset directly from the public PhysioNet MIMIC-IV tables:
 
 ```bash
-python3.10 scripts/build_tasks.py \
-  --source-bigquery \
-  --gcp-project YOUR_GCP_PROJECT \
-  --task diagnosis \
-  --out-dir ./artifacts/diagnosis_bq \
-  --diagnosis-max-samples-per-label 100 \
-  --diagnosis-sampling-seed 7 \
-  --preview-limit 1
+python3.10 scripts/build_tasks.py --source-bigquery --gcp-project YOUR_GCP_PROJECT --task diagnosis --out-dir ./artifacts/diagnosis_bq --diagnosis-max-samples-per-label 100 --diagnosis-sampling-seed 7 --preview-limit 1
 ```
 
 Build a discharge dataset the same way:
 
 ```bash
-python3.10 scripts/build_tasks.py \
-  --source-bigquery \
-  --gcp-project YOUR_GCP_PROJECT \
-  --task discharge \
-  --out-dir ./artifacts/discharge_bq \
-  --preview-limit 1
+python3.10 scripts/build_tasks.py --source-bigquery --gcp-project YOUR_GCP_PROJECT --task discharge --out-dir ./artifacts/discharge_bq --preview-limit 1
 ```
 
 Currently, you can only build dattaset for `diagnosis` and `discharge` tasks only. Will soon add more tasks.
