@@ -4,6 +4,11 @@ MeRL is a small Python library for building RL evnironments for clinical tasks. 
 
 Currently, evaluation scenarios are based on MIMIC-IV dataset only.
 
+Righ now, I'm in the process of adding: 
+- multi-turn env, 
+- one visual task (cxr-workup) and 
+- auto-mode, where you can twek tasks to your liking through chat.
+
 ## Quick Start
 
 Use Python 3.10+.
