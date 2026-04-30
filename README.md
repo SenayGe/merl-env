@@ -1,4 +1,4 @@
-# <img src="docs/assets/merl-wordmark.png" alt="MeRL (Medical RL) Environment" width="420">
+# <img src="docs/assets/merl-wordmark.png" alt="MeRL (Medical RL) Environment" width="260">
 
 MeRL is a small Python library for building RL evnironments for clinical tasks. You can tweak the evaluation tasks, add agent-tools, and run RL training on your version of clinical scenarios.
 
