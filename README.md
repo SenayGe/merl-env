@@ -9,6 +9,12 @@ Righ now, I'm in the process of adding:
 - one visual task (cxr-workup) and 
 - auto-mode, where you can twek tasks to your liking through chat.
 
+## The hub (early look)
+
+A UI for the auto-mode where you can have an agent tweak the env however you like. A work in porogress right now, it will be coming soon.
+
+![MeRL hub — chat-driven clinical RL environment builder](docs/assets/hub_ui.png)
+
 ## Quick Start
 
 Use Python 3.10+.
